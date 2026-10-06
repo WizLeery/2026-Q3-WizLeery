@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizLeery — Q3 2026 Visual Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* ============ Q3 2026 — V7 ============ */
+:root{
+  --bg-page:#0A0A0A;
+  --bg-device:#111111;
+  --text-primary:#FFFFFF;
+  --text-secondary:rgba(255,255,255,0.6);
+  --text-muted:rgba(255,255,255,0.35);
+  --border-dark:rgba(255,255,255,0.08);
+  --accent-purple:#7C3AED;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{
+  background:var(--bg-page);
+  color:var(--text-primary);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  line-height:1.6;
+}
+img{
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  filter:none !important;
+}
+[hidden]{display:none !important}
+
+/* ============ FEATURED ============ */
+.featured{height:auto;min-height:100vh;position:relative;overflow:hidden}
+.corner{position:absolute;z-index:6;font-size:12px;letter-spacing:0.2em;text-transform:uppercase}
+.corner-tl{top:32px;left:40px;color:var(--text-secondary);font-weight:600;line-height:1.7}
+.corner-tr{top:32px;right:40px;color:var(--text-muted)}
+.accent{color:var(--accent-purple)}
+.featured-stage{
+  position:relative;
+  height:calc(48.75vw + 14px + max(calc(48vh - 24.375vw - 7px), 64px)); /* 组合总高=上边距+样机高, 首屏随内容长高, 不裁底部、不压第二屏 */
+}
+.featured-slide{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-start;justify-content:center;
+}
+
+/* ============ DEVICES ============ */
+.laptop{width:720px;max-width:60vw;position:relative;z-index:1;cursor:pointer;flex-shrink:0}
+.laptop .screen{aspect-ratio:16/10;border-radius:12px 12px 0 0;background:var(--bg-device);padding:10px 10px 0;overflow:hidden}
+.laptop::after{content:'';display:block;height:14px;width:112%;margin-left:-6%;background:#1A1A1A;border-radius:0 0 10px 10px}
+.phone{
+  width:280px;aspect-ratio:9/19.5;border-radius:36px;background:var(--bg-device);
+  padding:8px;position:relative;z-index:2;cursor:pointer;flex-shrink:0;
+}
+.phone::before{
+  content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  width:90px;height:22px;border-radius:0 0 14px 14px;background:var(--bg-device);z-index:2;
+}
+.phone .screen{width:100%;height:100%;border-radius:28px;overflow:hidden;padding:0}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.featured .combo{
+  position:relative;
+  height:calc(48.75vw + 14px);            /* 电脑: 宽 78vw、16:10 屏 + 底座 14px */
+  width:92.4vw;                            /* 电脑 78vw + 手机 18vw 交叠 20% */
+  margin-top:max(calc(48vh - 24.375vw - 7px), 64px); /* 垂直中心约 48vh, 顶部留 64px 给四角信息 */
+}
+.featured .combo .laptop{position:absolute;right:0;top:0;width:78vw;max-width:none;z-index:1}
+.featured .combo .phone{position:absolute;left:0;bottom:0;width:18vw;z-index:2}
+.phone:hover .screen img,.item:hover img{filter:brightness(1.05) !important}
+
+/* ============ SELECTED ============ */
+.label{text-align:center;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted)}
+#selected{padding:140px 0 120px}
+#selected .label{margin-bottom:56px}
+.ring-stage{position:relative;height:680px;perspective:1600px;margin-top:24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none}
+.ring-stage:active{cursor:grabbing}
+.ring .phone img{pointer-events:none}
+.ring{
+  position:absolute;left:50%;top:50%;width:0;height:0;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.ring .phone{
+  position:absolute;left:-122.5px;top:-265px;
+  width:245px;
+  transform:translate3d(var(--x,0px), var(--y,0px), var(--z,0px));
+}
+@media (max-width:1200px){
+  .ring-stage{transform:scale(0.85)}
+}
+
+/* ============ ARCHIVE ============ */
+#archive{padding:120px 32px 160px}
+#archive .label{margin-bottom:56px}
+.masonry{columns:5;column-gap:16px;max-width:1800px;margin:0 auto}
+.masonry .item{break-inside:avoid;-webkit-column-break-inside:avoid;margin-bottom:16px;cursor:pointer}
+.masonry img{width:100%;height:auto;display:block;border-radius:8px;margin-bottom:8px}
+.cap{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;text-align:center;color:var(--text-muted)}
+
+/* ============ LIGHTBOX ============ */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:100}
+.lb-scroll{width:100%;height:100%;overflow:auto;display:flex;flex-direction:column;padding:48px 0;cursor:grab}
+.lightbox img{max-width:90vw;width:auto;height:auto;margin:auto;display:block}
+.lb-close{position:absolute;top:24px;right:32px;font-size:24px;line-height:1;color:var(--text-secondary);background:none;border:none;cursor:pointer;z-index:5;padding:8px}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:26px;color:var(--text-secondary);background:none;border:none;cursor:pointer;padding:16px;z-index:5}
+.lb-prev{left:20px}
+.lb-next{right:20px}
+.lb-meta{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:18px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);z-index:5}
+body.lb-open{overflow:hidden}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1024px){
+  .masonry{columns:3}
+}
+@media (max-width:768px){
+  .corner{font-size:10px}
+  .corner-tl{top:16px;left:16px}
+  .corner-tr{top:16px;right:16px}
+  .featured{height:auto;min-height:100vh}
+  .featured-stage{position:relative;height:calc(100vh - 96px)}
+  .featured .combo{height:auto;width:90vw;margin-top:56px}
+  .featured .combo .laptop{position:relative;right:auto;top:auto;width:90vw;max-width:none}
+  .featured .combo .phone{position:relative;left:auto;bottom:auto;width:170px;margin:20px auto 0}
+  .ring-stage{perspective:none;height:auto;transform:none;margin-top:0;overflow:visible}
+  .ring{position:static;width:auto;height:100%;transform:none !important;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 16px}
+  .ring .phone{position:static;transform:none !important;width:100%;max-width:245px;justify-self:center}
+  .ring .phone[data-copy]:not([data-copy="1"]){display:none !important}
+  .masonry{columns:2}
+}
+@media (max-height:840px){
+  .featured .combo{transform:scale(0.85)}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SCREEN 1 · FEATURED ============ -->
+<section class="featured" id="featured">
+  <div class="corner corner-tl">WIZLEERY<br>Q3 2026</div>
+  <div class="corner corner-tr"><span>FEATURED</span> <span class="accent">01 / 02</span></div>
+  <div class="featured-stage" id="featuredStage"></div>
+</section>
+
+<!-- ============ SCREEN 2 · SELECTED ============ -->
+<section id="selected">
+  <div class="label">SELECTED</div>
+  <div class="ring-stage" id="ringStage">
+    <div class="ring" id="ring"></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN 3 · ARCHIVE ============ -->
+<section id="archive">
+  <div class="label">ARCHIVE</div>
+  <div class="masonry" id="masonry"></div>
+</section>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <div class="lb-scroll" id="lbScroll"></div>
+  <div class="lb-meta"><span id="lbCounter"></span><span id="lbName"></span></div>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">←</button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">→</button>
+</div>
+
+<script>
+const IMAGES = [
+    "1_01.jpg",
+    "2.jpg",
+    "3.jpg",
+    "4_01.jpg",
+    "5_01.jpg",
+    "6_01.jpg",
+    "7_01.jpg",
+    "8_01.jpg",
+    "9_01.jpg",
+    "10.jpg",
+    "11.jpg",
+    "12.jpg",
+    "13_01.jpg",
+    "14.jpg",
+    "15.jpg",
+    "16.jpg",
+    "17.jpg",
+    "18.jpg",
+    "19_01.jpg",
+    "20.jpg",
+    "21.jpg",
+    "22_01.jpg",
+    "23_01.jpg",
+    "24_01.jpg",
+    "25_01.jpg",
+    "26_01.jpg",
+    "27_01.jpg",
+    "28_01.jpg",
+    "29.jpg",
+    "30.jpg",
+    "31.jpg",
+    "32_01.jpg",
+    "34_01.jpg",
+    "35_01.jpg",
+    "36_01.jpg",
+    "37_01.jpg",
+    "38_01.jpg",
+    "39.jpg",
+    "40_01.jpg",
+    "41_01.jpg",
+    "42_01.jpg",
+    "43_01.jpg",
+    "44_01.jpg",
+    "45_01.jpg",
+    "46_01.jpg",
+    "47_01.jpg",
+    "48_01.jpg",
+    "49_01.jpg",
+    "50_01.jpg",
+    "51_01.jpg",
+    "52_01.jpg",
+    "53_01.jpg",
+    "54_01.jpg",
+    "55_01.jpg",
+    "56_01.jpg",
+    "57_01.jpg",
+    "58_01.jpg",
+    "59_01.jpg",
+    "60.jpg",
+    "61.jpg",
+    "62.jpg",
+    "63.jpg",
+    "64.jpg",
+    "65_01.jpg",
+    "66_01.jpg",
+    "67_01.jpg",
+    "68_01.jpg",
+    "69_01.jpg",
+    "70_01.jpg",
+    "71_01.jpg",
+    "72_01.jpg",
+    "73_01.jpg",
+    "74_01.jpg",
+    "75_01.jpg",
+    "76_01.jpg",
+    "77.jpg",
+    "78_01.jpg",
+    "79_01.jpg",
+    "80_01.jpg",
+    "81_01.jpg",
+    "82_01.jpg",
+    "83_01.jpg",
+    "84_01.jpg",
+    "85_01.jpg",
+    "86_01.jpg",
+    "87_01.jpg",
+    "88.jpg",
+    "89.jpg",
+    "90.jpg",
+    "91.jpg",
+    "92.jpg",
+    "93.jpg",
+    "94.jpg",
+    "95.jpg",
+    "96.jpg",
+    "97.jpg",
+    "98.jpg",
+    "99.jpg",
+    "100.jpg",
+    "101.jpg",
+    "102.jpg",
+    "103.jpg",
+    "104.jpg",
+    "105.jpg",
+    "106.jpg",
+    "107.jpg",
+    "108.jpg",
+    "109.jpg",
+    "110.jpg",
+    "111.jpg",
+    "112.jpg",
+    "113.jpg",
+    "114.jpg",
+    "115.jpg",
+    "116.jpg",
+    "117.jpg",
+    "118_01.jpg",
+    "119.jpg",
+    "120.jpg",
+    "121_01.jpg",
+    "122.jpg",
+    "123_01.jpg"
+];
+const SPLIT = {
+    "1_01.jpg": ["1_01.jpg", "1_02.jpg", "1_03.jpg", "1_04.jpg", "1_05.jpg"],
+    "4_01.jpg": ["4_01.jpg", "4_02.jpg", "4_03.jpg", "4_04.jpg", "4_05.jpg"],
+    "5_01.jpg": ["5_01.jpg", "5_02.jpg", "5_03.jpg", "5_04.jpg", "5_05.jpg"],
+    "6_01.jpg": ["6_01.jpg", "6_02.jpg", "6_03.jpg", "6_04.jpg", "6_05.jpg"],
+    "7_01.jpg": ["7_01.jpg", "7_02.jpg", "7_03.jpg", "7_04.jpg", "7_05.jpg"],
+    "8_01.jpg": ["8_01.jpg", "8_02.jpg", "8_03.jpg", "8_04.jpg", "8_05.jpg"],
+    "9_01.jpg": ["9_01.jpg", "9_02.jpg", "9_03.jpg", "9_04.jpg", "9_05.jpg"],
+    "13_01.jpg": ["13_01.jpg", "13_02.jpg", "13_03.jpg", "13_04.jpg"],
+    "19_01.jpg": ["19_01.jpg", "19_02.jpg", "19_03.jpg", "19_04.jpg", "19_05.jpg"],
+    "22_01.jpg": ["22_01.jpg", "22_02.jpg", "22_03.jpg", "22_04.jpg", "22_05.jpg"],
+    "23_01.jpg": ["23_01.jpg", "23_02.jpg", "23_03.jpg", "23_04.jpg", "23_05.jpg"],
+    "24_01.jpg": ["24_01.jpg", "24_02.jpg", "24_03.jpg", "24_04.jpg", "24_05.jpg"],
+    "25_01.jpg": ["25_01.jpg", "25_02.jpg", "25_03.jpg", "25_04.jpg", "25_05.jpg"],
+    "26_01.jpg": ["26_01.jpg", "26_02.jpg", "26_03.jpg", "26_04.jpg", "26_05.jpg"],
+    "27_01.jpg": ["27_01.jpg", "27_02.jpg", "27_03.jpg", "27_04.jpg", "27_05.jpg"],
+    "28_01.jpg": ["28_01.jpg", "28_02.jpg", "28_03.jpg", "28_04.jpg", "28_05.jpg"],
+    "32_01.jpg": ["32_01.jpg", "32_02.jpg", "32_03.jpg", "32_04.jpg", "32_05.jpg", "32_06.jpg", "32_07.jpg"],
+    "34_01.jpg": ["34_01.jpg", "34_02.jpg", "34_03.jpg", "34_04.jpg", "34_05.jpg"],
+    "35_01.jpg": ["35_01.jpg", "35_02.jpg", "35_03.jpg", "35_04.jpg", "35_05.jpg"],
+    "36_01.jpg": ["36_01.jpg", "36_02.jpg", "36_03.jpg", "36_04.jpg", "36_05.jpg"],
+    "37_01.jpg": ["37_01.jpg", "37_02.jpg", "37_03.jpg", "37_04.jpg", "37_05.jpg"],
+    "38_01.jpg": ["38_01.jpg", "38_02.jpg", "38_03.jpg", "38_04.jpg", "38_05.jpg"],
+    "40_01.jpg": ["40_01.jpg", "40_02.jpg", "40_03.jpg", "40_04.jpg", "40_05.jpg"],
+    "41_01.jpg": ["41_01.jpg", "41_02.jpg", "41_03.jpg", "41_04.jpg"],
+    "42_01.jpg": ["42_01.jpg", "42_02.jpg", "42_03.jpg", "42_04.jpg", "42_05.jpg"],
+    "43_01.jpg": ["43_01.jpg", "43_02.jpg", "43_03.jpg", "43_04.jpg", "43_05.jpg", "43_06.jpg", "43_07.jpg", "43_08.jpg", "43_09.jpg"],
+    "44_01.jpg": ["44_01.jpg", "44_02.jpg", "44_03.jpg", "44_04.jpg", "44_05.jpg"],
+    "45_01.jpg": ["45_01.jpg", "45_02.jpg", "45_03.jpg", "45_04.jpg", "45_05.jpg"],
+    "46_01.jpg": ["46_01.jpg", "46_02.jpg", "46_03.jpg"],
+    "47_01.jpg": ["47_01.jpg", "47_02.jpg", "47_03.jpg", "47_04.jpg", "47_05.jpg"],
+    "48_01.jpg": ["48_01.jpg", "48_02.jpg", "48_03.jpg", "48_04.jpg", "48_05.jpg"],
+    "49_01.jpg": ["49_01.jpg", "49_02.jpg", "49_03.jpg", "49_04.jpg", "49_05.jpg"],
+    "50_01.jpg": ["50_01.jpg", "50_02.jpg", "50_03.jpg", "50_04.jpg", "50_05.jpg"],
+    "51_01.jpg": ["51_01.jpg", "51_02.jpg", "51_03.jpg", "51_04.jpg", "51_05.jpg"],
+    "52_01.jpg": ["52_01.jpg", "52_02.jpg", "52_03.jpg", "52_04.jpg", "52_05.jpg"],
+    "53_01.jpg": ["53_01.jpg", "53_02.jpg", "53_03.jpg", "53_04.jpg", "53_05.jpg"],
+    "54_01.jpg": ["54_01.jpg", "54_02.jpg", "54_03.jpg", "54_04.jpg", "54_05.jpg"],
+    "55_01.jpg": ["55_01.jpg", "55_02.jpg", "55_03.jpg", "55_04.jpg", "55_05.jpg"],
+    "56_01.jpg": ["56_01.jpg", "56_02.jpg", "56_03.jpg", "56_04.jpg", "56_05.jpg"],
+    "57_01.jpg": ["57_01.jpg", "57_02.jpg", "57_03.jpg", "57_04.jpg", "57_05.jpg"],
+    "58_01.jpg": ["58_01.jpg", "58_02.jpg", "58_03.jpg", "58_04.jpg", "58_05.jpg"],
+    "59_01.jpg": ["59_01.jpg", "59_02.jpg", "59_03.jpg", "59_04.jpg", "59_05.jpg"],
+    "65_01.jpg": ["65_01.jpg", "65_02.jpg", "65_03.jpg", "65_04.jpg", "65_05.jpg"],
+    "66_01.jpg": ["66_01.jpg", "66_02.jpg", "66_03.jpg", "66_04.jpg", "66_05.jpg"],
+    "67_01.jpg": ["67_01.jpg", "67_02.jpg", "67_03.jpg", "67_04.jpg", "67_05.jpg"],
+    "68_01.jpg": ["68_01.jpg", "68_02.jpg", "68_03.jpg", "68_04.jpg", "68_05.jpg"],
+    "69_01.jpg": ["69_01.jpg", "69_02.jpg", "69_03.jpg", "69_04.jpg", "69_05.jpg"],
+    "70_01.jpg": ["70_01.jpg", "70_02.jpg", "70_03.jpg", "70_04.jpg", "70_05.jpg"],
+    "71_01.jpg": ["71_01.jpg", "71_02.jpg", "71_03.jpg", "71_04.jpg", "71_05.jpg"],
+    "72_01.jpg": ["72_01.jpg", "72_02.jpg", "72_03.jpg", "72_04.jpg", "72_05.jpg"],
+    "73_01.jpg": ["73_01.jpg", "73_02.jpg", "73_03.jpg", "73_04.jpg", "73_05.jpg"],
+    "74_01.jpg": ["74_01.jpg", "74_02.jpg", "74_03.jpg", "74_04.jpg", "74_05.jpg"],
+    "75_01.jpg": ["75_01.jpg", "75_02.jpg", "75_03.jpg", "75_04.jpg", "75_05.jpg"],
+    "76_01.jpg": ["76_01.jpg", "76_02.jpg", "76_03.jpg", "76_04.jpg", "76_05.jpg"],
+    "78_01.jpg": ["78_01.jpg", "78_02.jpg", "78_03.jpg", "78_04.jpg", "78_05.jpg"],
+    "79_01.jpg": ["79_01.jpg", "79_02.jpg", "79_03.jpg", "79_04.jpg", "79_05.jpg"],
+    "80_01.jpg": ["80_01.jpg", "80_02.jpg", "80_03.jpg", "80_04.jpg", "80_05.jpg", "80_06.jpg"],
+    "81_01.jpg": ["81_01.jpg", "81_02.jpg", "81_03.jpg", "81_04.jpg", "81_05.jpg"],
+    "82_01.jpg": ["82_01.jpg", "82_02.jpg", "82_03.jpg", "82_04.jpg", "82_05.jpg"],
+    "83_01.jpg": ["83_01.jpg", "83_02.jpg", "83_03.jpg", "83_04.jpg", "83_05.jpg"],
+    "84_01.jpg": ["84_01.jpg", "84_02.jpg", "84_03.jpg", "84_04.jpg", "84_05.jpg"],
+    "85_01.jpg": ["85_01.jpg", "85_02.jpg", "85_03.jpg", "85_04.jpg", "85_05.jpg"],
+    "86_01.jpg": ["86_01.jpg", "86_02.jpg", "86_03.jpg", "86_04.jpg", "86_05.jpg"],
+    "87_01.jpg": ["87_01.jpg", "87_02.jpg", "87_03.jpg", "87_04.jpg", "87_05.jpg"],
+    "118_01.jpg": ["118_01.jpg", "118_02.jpg", "118_03.jpg"],
+    "121_01.jpg": ["121_01.jpg", "121_02.jpg", "121_03.jpg", "121_04.jpg", "121_05.jpg"],
+    "123_01.jpg": ["123_01.jpg", "123_02.jpg", "123_03.jpg"]
+};
+const coverOf = (n)=> SPLIT[n] ? SPLIT[n][0] : n;
+const lbList = (n)=> SPLIT[n] ? SPLIT[n] : [n];
+const FEATURED = IMAGES.slice(0,2);
+const SELECTED = IMAGES.slice(2,8);    /* 6 台: 素材 03-08 */
+const ARCHIVE = IMAGES.slice(8);       /* 素材 09 起进瀑布流 */
+
+/* ---------- build featured (static: phone left = 01 / laptop right = 02) ---------- */
+const stage = document.getElementById('featuredStage');
+const slide = document.createElement('div');
+slide.className = 'featured-slide';
+slide.innerHTML =
+  '<div class="combo">' +
+    '<div class="laptop" data-open="1"><div class="screen"><img src="images/'+coverOf(FEATURED[1])+'" alt="02" loading="eager"></div></div>' +
+    '<div class="phone" data-open="0"><div class="screen"><img src="images/'+coverOf(FEATURED[0])+'" alt="01" loading="eager"></div></div>' +
+  '</div>';
+stage.appendChild(slide);
+
+/* ---------- build selected ring (Rainbow Carousel: 6 phones, drag + auto loop) ---------- */
+const SET = 6, COPIES = 3;
+const ringStage = document.getElementById('ringStage');
+const ring = document.getElementById('ring');
+const ringPhones = [];
+let pitch = window.innerWidth / 6;      /* 一屏正好 6 台 */
+function layoutRing(){
+  pitch = window.innerWidth / 6;
+  ringPhones.forEach(p=>{
+    p.style.setProperty('--x', (p.dataset.j * pitch)+'px');
+  });
+}
+SELECTED.forEach((name,k)=>{
+  const c = k - 2.5;                     /* 组内居中 -2.5..2.5 */
+  for(let copy=0; copy<COPIES; copy++){
+    const j = copy*SET + k;
+    const p = document.createElement('div');
+    p.className = 'phone';
+    p.dataset.open = 2 + k;              /* 复制组映射回原素材 */
+    p.dataset.copy = copy + 1;
+    p.dataset.j = j;
+    p.style.setProperty('--y', (c*c*3)+'px');    /* 两端抬升 */
+    p.style.setProperty('--z', (-c*c*14)+'px');  /* 两端后收, 中间下沉凹面 */
+    p.innerHTML = '<div class="screen"><img src="images/'+coverOf(name)+'" alt="'+name+'" loading="lazy" draggable="false"></div>';
+    ring.appendChild(p);
+    ringPhones.push(p);
+  }
+});
+layoutRing();
+window.addEventListener('resize', layoutRing);
+const LOOP = ()=> pitch * SET;          /* 一组 = 100vw */
+let ringX = LOOP()/2, ringPaused = false, ringLast = performance.now();
+function ringTick(now){
+  const dt = Math.min(0.1, (now - ringLast)/1000);
+  ringLast = now;
+  if(!ringPaused) ringX = (ringX + LOOP()*dt/40) % LOOP();  /* 40s 一组无缝循环 */
+  ring.style.transform = 'translateX(' + (-ringX) + 'px)';
+  requestAnimationFrame(ringTick);
+}
+requestAnimationFrame(ringTick);
+ringStage.addEventListener('mouseenter', ()=>{ ringPaused = true; });
+ringStage.addEventListener('mouseleave', ()=>{ ringPaused = false; });
+/* 鼠标拖拽左右滑动 */
+let dragging = false, dragMoved = 0, lastX = 0;
+ringStage.addEventListener('pointerdown', e=>{
+  if(e.pointerType === 'mouse' && e.button !== 0) return;
+  dragging = true; dragMoved = 0; lastX = e.clientX;
+  ringPaused = true;
+  ringStage.setPointerCapture(e.pointerId);
+});
+ringStage.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  const dx = e.clientX - lastX;
+  lastX = e.clientX;
+  dragMoved += Math.abs(dx);
+  ringX = (ringX - dx + LOOP()*4) % LOOP();
+});
+function endDrag(){
+  if(!dragging) return;
+  dragging = false;
+  if(dragMoved > 5) suppressClick = true;   /* 拖拽后吞掉误触的 click */
+  ringPaused = !ringStage.matches(':hover');
+}
+ringStage.addEventListener('pointerup', endDrag);
+ringStage.addEventListener('pointercancel', endDrag);
+
+/* ---------- build archive masonry ---------- */
+const masonry = document.getElementById('masonry');
+ARCHIVE.forEach((name,k)=>{
+  const idx = 8 + k;
+  const item = document.createElement('div');
+  item.className = 'item';
+  item.dataset.open = idx;
+  item.innerHTML = '<img src="images/'+coverOf(name)+'" alt="'+name+'" loading="lazy"><div class="cap">'+name.toUpperCase()+'</div>';
+  masonry.appendChild(item);
+});
+
+/* ---------- lightbox ---------- */
+const lb = document.getElementById('lightbox');
+const lbScroll = document.getElementById('lbScroll');
+const lbCounter = document.getElementById('lbCounter');
+const lbName = document.getElementById('lbName');
+let cur = 0, zoom = 1, lbImgs = [];
+function openLB(i){
+  cur = i;
+  const srcs = lbList(IMAGES[i]);
+  lbScroll.innerHTML = '';
+  srcs.forEach(s=>{
+    const im = document.createElement('img');
+    im.src = 'images/'+s;
+    im.alt = s;
+    lbScroll.appendChild(im);
+  });
+  lbImgs = lbScroll.querySelectorAll('img');
+  zoom = 1;
+  lbImgs.forEach(im=>{ im.style.width = ''; im.style.maxWidth = ''; });
+  lbScroll.scrollTop = 0; lbScroll.scrollLeft = 0;
+  lbCounter.textContent = String(i+1).padStart(2,'0') + ' / ' + IMAGES.length;
+  lbName.textContent = IMAGES[i].toUpperCase();
+  lb.hidden = false;
+  document.body.classList.add('lb-open');
+}
+function closeLB(){ lb.hidden = true; document.body.classList.remove('lb-open'); }
+function step(d){ openLB((cur + d + IMAGES.length) % IMAGES.length); }
+let suppressClick = false;
+document.addEventListener('click', e=>{
+  if(suppressClick){ suppressClick = false; return; }
+  const t = e.target.closest('[data-open]');
+  if(t) openLB(+t.dataset.open);
+});
+document.getElementById('lbClose').addEventListener('click', closeLB);
+document.getElementById('lbPrev').addEventListener('click', e=>{ e.stopPropagation(); step(-1); });
+document.getElementById('lbNext').addEventListener('click', e=>{ e.stopPropagation(); step(1); });
+lb.addEventListener('click', e=>{ if(e.target === lb || e.target === lbScroll) closeLB(); });
+document.addEventListener('keydown', e=>{
+  if(lb.hidden) return;
+  if(e.key === 'Escape') closeLB();
+  if(e.key === 'ArrowLeft') step(-1);
+  if(e.key === 'ArrowRight') step(1);
+});
+lb.addEventListener('wheel', e=>{
+  e.preventDefault();
+  const factor = (e.deltaY < 0) ? 1.15 : (1/1.15);
+  zoom = Math.min(6, Math.max(0.4, zoom * factor));
+  lbImgs.forEach(im=>{
+    im.style.width = (im.offsetWidth * factor) + 'px';
+    im.style.maxWidth = 'none';
+  });
+}, {passive:false});
+let panning = false, px = 0, py = 0;
+lbScroll.addEventListener('mousedown', e=>{
+  if(e.target === lbScroll) return;
+  panning = true; px = e.clientX; py = e.clientY;
+  e.preventDefault();
+});
+window.addEventListener('mousemove', e=>{
+  if(!panning) return;
+  lbScroll.scrollLeft -= (e.clientX - px);
+  lbScroll.scrollTop -= (e.clientY - py);
+  px = e.clientX; py = e.clientY;
+});
+window.addEventListener('mouseup', ()=>{ panning = false; });
+</script>
+</body>
+</html>
